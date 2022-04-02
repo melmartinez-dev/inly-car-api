@@ -45,7 +45,8 @@ class CalculatorEntity
     public function calculatePayments(): array
     {
         $policyPercentage = $this->determineIfFridayPolicy() ? 13 : 11;
-        $basePrice = $this->carValue->getCarValue() * $policyPercentage / 100;
+        $carValue = $this->carValue->getCarValue();
+        $basePrice = $carValue * $policyPercentage / 100;
         $commission = $basePrice * 0.17;
         $taxPercentage = $this->taxPercentage->getTaxPercentage();
         $tax = $basePrice * ($taxPercentage / 100);
@@ -57,7 +58,7 @@ class CalculatorEntity
             $installment = new PaymentEntity($basePrice / $policyInstallments, $commission / $policyInstallments, $tax / $policyInstallments, $total / $policyInstallments);
             $installments = array_merge($installments, array_fill(0, $policyInstallments, $installment));
         }
-        return compact(["policyPercentage", "taxPercentage", "policy", "installments"]);
+        return compact(["policyPercentage", "taxPercentage", "carValue", "policy", "installments"]);
     }
 
     private function determineIfFridayPolicy(): bool
