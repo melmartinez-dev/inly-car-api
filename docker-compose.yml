@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app:
+    image: php:fpm-alpine
+    container_name: car_api_php
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+  nginx:
+    image: nginx:stable-alpine
+    container_name: car_api_nginx
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./nginx:/etc/nginx/conf.d
